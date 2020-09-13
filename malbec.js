@@ -1,21 +1,28 @@
 class NLayer {
-    constructor(size, inputs, position) {
+    constructor(size, inputs, activation) {
         this.inputs = inputs;
         this.outputs = new Array(size);
         this.weights = new Array(size);
         this.biases = new Array(size);
-        this.pos = position;
-        //Initialize random weights and biases
-        if (this.pos != 0) {
-            for (let o = 0; o < this.weights.length; o++) {
-                this.weights[o] = [];
-                this.biases[o] = Math.random();
-                for (let i = 0; i < this.inputs.length; i++) {
-                    this.weights[o].push(Math.random());
+        if (activation == 'tanh') {
+            function activate(z) {
+                return Math.tanh(z);
+            }
+        } else if (activation == 'sigmoid') {
+            function activate(z) {
+                return 1 / (1 + Math.exp(-z / k));
+            }
+        } else if (activation == 'relu') {
+            function activate(z) {
+                if (z > 0) {
+                    return z;
+                } else {
+                    return 0;
                 }
             }
         }
-        else {
+        //Initialize random weights and biases
+        if (this.activation == undefined) {
             for (let o = 0; o < this.weights.length; o++) {
                 this.weights[o] = new Array(this.inputs.length);
                 this.biases[o] = 0;
@@ -24,11 +31,24 @@ class NLayer {
                 }
             }
         }
+        else {
+            for (let o = 0; o < this.weights.length; o++) {
+                this.weights[o] = [];
+                this.biases[o] = Math.random();
+                for (let i = 0; i < this.inputs.length; i++) {
+                    this.weights[o].push(Math.random());
+                }
+            }
+        }
     }
-    //Matrix max
     forward(inputs) {
         this.inputs = inputs;
-        if (this.pos > 0) {
+        if (this.activation == undefined) {
+            for (let i = 0; i < this.outputs.length; i++) {
+                this.outputs[i] = this.inputs[i];
+            }
+        }
+        else {
             for (let o = 0; o < this.outputs.length; o++) {
                 this.outputs[o] = 0;
                 for (let i = 0; i < this.inputs.length; i++) {
@@ -38,17 +58,7 @@ class NLayer {
                 this.outputs[o] = activate(this.outputs[o]);
             }
         }
-        else {
-            for (let i = 0; i < this.outputs.length; i++) {
-                this.outputs[i] = this.inputs[i];
-            }
-        }
-        //tanh activation function
-        function activate(z) {
-            return Math.tanh(z);
-        }
     }
-    //Returns weights and biases as a list
     get genome() {
         let genome = [];
         genome.push(this.biases);
@@ -57,7 +67,6 @@ class NLayer {
         }
         return genome;
     }
-    //Sets all parameters to the ones specified in the genome
     set encode(genome) {
         this.weights = Array.from(genome.slice(1));
         this.biases = Array.from(genome[0]);
@@ -76,10 +85,16 @@ class NLayer {
 var malbec = {
     create: function (...layers) {
         network = new Array(layers.length);
-        network[0] = new NLayer(layers[0], new Array(layers[0]), 0);
+        network[0] = new NLayer(layers[0][0], new Array(layers[0][0]));
         for (let i = 1; i < network.length; i++) {
-            network[i] = new NLayer(layers[i], network[i - 1].outputs, i);
+            network[i] = new NLayer(layers[i][0], network[i - 1].outputs, layers[i][1]);
         }
         return network
+    },
+    run: function (network, input) {
+        network[0].forward(input);
+        for (let i = 1; i < network.length; i++) {
+            network[i].forward(network[i - 1].outputs);
+        }
     }
 }
