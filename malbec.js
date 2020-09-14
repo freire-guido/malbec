@@ -1,3 +1,19 @@
+class NNetwork {
+    constructor(layers) {
+        this.layers = new Array(layers.length);
+        this.layers[0] = new NLayer(layers[0][0], new Array(layers[0][0]));
+        for (let i = 1; i < this.layers.length; i++) {
+            this.layers[i] = new NLayer(layers[i][0], this.layers[i - 1].outputs, layers[i][1]);
+        }
+    }
+    forward(input) {
+        this.layers[0].forward(input);
+        for (let i = 1; i < this.layers.length; i++) {
+            this.layers[i].forward(this.layers[i - 1].outputs);
+        }
+        return this.layers[this.layers.length - 1].outputs;
+    }
+}
 class NLayer {
     constructor(size, inputs, activation) {
         this.inputs = inputs;
@@ -19,6 +35,10 @@ class NLayer {
                 } else {
                     return 0;
                 }
+            }
+        } else {
+            function activate(z) {
+                return z;
             }
         }
         //Initialize random weights and biases
@@ -84,17 +104,8 @@ class NLayer {
 }
 var malbec = {
     create: function (...layers) {
-        network = new Array(layers.length);
-        network[0] = new NLayer(layers[0][0], new Array(layers[0][0]));
-        for (let i = 1; i < network.length; i++) {
-            network[i] = new NLayer(layers[i][0], network[i - 1].outputs, layers[i][1]);
-        }
-        return network
-    },
-    run: function (network, input) {
-        network[0].forward(input);
-        for (let i = 1; i < network.length; i++) {
-            network[i].forward(network[i - 1].outputs);
-        }
+        console.log(layers);
+        network = new NNetwork(layers);
+        return network;
     }
 }
