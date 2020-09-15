@@ -16,7 +16,6 @@ class NNetwork {
 }
 class NLayer {
     constructor(size, inputs, activation) {
-        console.log(activation)
         this.inputs = inputs;
         this.outputs = new Array(size);
         this.weights = new Array(size);
@@ -107,7 +106,6 @@ class NLayer {
 }
 var malbec = {
     create: function (...layers) {
-        console.log(layers);
         network = new NNetwork(layers);
         return network;
     }

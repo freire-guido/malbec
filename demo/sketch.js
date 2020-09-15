@@ -5,7 +5,7 @@ Each layer has a different activation function.
 - Guido Freire, 2020
 */
 
-var network = malbec.create([5], [4, 'relu'], [2, 'tanh']);
+var network = malbec.create([5], [4, 'tanh'], [2, 'sigmoid']);
 console.log(network);
 
 for (let i = 0; i < 10; i++) {
