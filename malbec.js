@@ -1,7 +1,7 @@
 class NNetwork {
     constructor(layers) {
         this.layers = new Array(layers.length);
-        this.layers[0] = new NLayer(layers[0][0], new Array(layers[0][0]));
+        this.layers[0] = new NLayer(layers[0][0], new Array(layers[0][0]), layers[0][1]);
         for (let i = 1; i < this.layers.length; i++) {
             this.layers[i] = new NLayer(layers[i][0], this.layers[i - 1].outputs, layers[i][1]);
         }
@@ -16,6 +16,7 @@ class NNetwork {
 }
 class NLayer {
     constructor(size, inputs, activation) {
+        console.log(activation)
         this.inputs = inputs;
         this.outputs = new Array(size);
         this.weights = new Array(size);
@@ -36,10 +37,12 @@ class NLayer {
                     return 0;
                 }
             }
-        } else {
+        } else if (activation == undefined) {
             function activate(z) {
                 return z;
             }
+        } else {
+            throw activation + ' is an invalid activation function';
         }
         //Initialize random weights and biases
         if (this.activation == undefined) {
