@@ -29,7 +29,8 @@ malbec's main functionality is automatically ordering NLayer inputs and outputs 
 The create command receives each layer as a list, each specifying its amount of neurons (size) and its activation function (activation).
 
 ```
-var network = malbec.create([5], [4, 'relu'], [2, 'tanh']); //Creates a neural net with three layers: 5 inputs, 4 hidden neurons and 2 outputs.
+var network = malbec.create([5], [4, 'relu'], [2, 'tanh']);
+//Creates a neural net with three layers: 5 inputs, 4 hidden neurons and 2 outputs.
 ```
 
 There are currently four activation functions: 'relu', 'tanh', 'sigmoid' (and none).
@@ -70,6 +71,6 @@ NLayers can read and match their parameters to those specified in a genome.
 
 **NLayer.genome = genome**
 
-````
+```
 network1[0].genome = network2[0].genome(); // Copies network2's first layer into network1's first layer
 ```
