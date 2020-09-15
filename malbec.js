@@ -90,7 +90,7 @@ class NLayer {
         }
         return genome;
     }
-    set encode(genome) {
+    set genome(genome) {
         this.weights = Array.from(genome.slice(1));
         this.biases = Array.from(genome[0]);
         for (let o = 0; o < this.weights.length; o++) {
