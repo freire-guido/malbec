@@ -1,5 +1,5 @@
 # malbec
-<img align="left" width="128" height="128" src="malbec-logo.png">
+<img align="left" width="128" height="128" src="demo/malbec-logo.png">
 
 > NOTE: This is just a practice project, usability and user-friendliness are not a priority right now.
 
