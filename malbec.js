@@ -21,15 +21,15 @@ class NLayer {
         this.weights = new Array(size);
         this.biases = new Array(size);
         if (activation == 'tanh') {
-            function activate(z) {
+            this.activate = function (z) {
                 return Math.tanh(z);
             }
         } else if (activation == 'sigmoid') {
-            function activate(z) {
-                return 1 / (1 + Math.exp(-z / k));
+            this.activate = function (z) {
+                return 1 / (1 + Math.exp(-z));
             }
         } else if (activation == 'relu') {
-            function activate(z) {
+            this.activate = function (z) {
                 if (z > 0) {
                     return z;
                 } else {
@@ -37,14 +37,14 @@ class NLayer {
                 }
             }
         } else if (activation == undefined) {
-            function activate(z) {
+            this.activate = function (z) {
                 return z;
             }
         } else {
             throw activation + ' is an invalid activation function';
         }
         //Initialize random weights and biases
-        if (this.activation == undefined) {
+        if (activation == undefined) {
             for (let o = 0; o < this.weights.length; o++) {
                 this.weights[o] = new Array(this.inputs.length);
                 this.biases[o] = 0;
@@ -65,20 +65,13 @@ class NLayer {
     }
     forward(inputs) {
         this.inputs = inputs;
-        if (this.activation == undefined) {
-            for (let i = 0; i < this.outputs.length; i++) {
-                this.outputs[i] = this.inputs[i];
+        for (let o = 0; o < this.outputs.length; o++) {
+            this.outputs[o] = 0;
+            for (let i = 0; i < this.inputs.length; i++) {
+                this.outputs[o] += this.inputs[i] * this.weights[o][i];
             }
-        }
-        else {
-            for (let o = 0; o < this.outputs.length; o++) {
-                this.outputs[o] = 0;
-                for (let i = 0; i < this.inputs.length; i++) {
-                    this.outputs[o] += this.inputs[i] * this.weights[o][i];
-                }
-                this.outputs[o] += this.biases[o];
-                this.outputs[o] = activate(this.outputs[o]);
-            }
+            this.outputs[o] += this.biases[o];
+            this.outputs[o] = this.activate(this.outputs[o]);
         }
     }
     get genome() {
@@ -94,10 +87,10 @@ class NLayer {
         this.biases = Array.from(genome[0]);
         for (let o = 0; o < this.weights.length; o++) {
             //8% mutation chance
-            let dice = random(100);
+            let dice = Math.random() * 100;
             if (dice < 8) {
                 for (let i = 0; i < this.weights[o].length; i++) {
-                    this.weights[o][i] = random(-1, 1);
+                    this.weights[o][i] = Math.random() * (Math.random() > 0.5 ? -1 : 1);
                 }
                 this.biases[o] = 0;
             }
@@ -108,5 +101,12 @@ var malbec = {
     create: function (...layers) {
         network = new NNetwork(layers);
         return network;
+    },
+    crossOver: function (...networks) {
+        let dice = [0];
+        for (let i = 0; i < networks.length; i++) {
+            dice.push(Math.round(Math.random()));
+            networks[i].layers.forEach(NLayer => { NLayer.genome.slice(dice[i], dice[i + 1]) });
+        }
     }
 }
