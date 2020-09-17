@@ -14,6 +14,7 @@
     - [Forward-propagation](#forward-propagation)
     - [Back-propagation](#back-propagation)
     - [Additional Functionality](#additional-functionality)
+      - [Encoding and Decoding](#encoding-and-decoding)
   - [Thanks?](#thanks?)
 
 ## Structure
@@ -55,7 +56,7 @@ coming soon!
 
 ## Additional Functionality
 
-### Encoding
+### Encoding and Decoding
 
 NLayers can be encoded into a 'genome', returning their weights and biases as a readable array. This can be used to produce mutation, crossover and transfer learning.
 
@@ -65,9 +66,7 @@ NLayers can be encoded into a 'genome', returning their weights and biases as a 
 var genome = network[1].genome() //Stores weights and biases as an array
 ```
 
-### Decoding
-
-NLayers can read and match their parameters to those specified in a genome.
+These genome objects can be read by other NLayers, setting their parameters to those in the genome.
 
 **NLayer.genome = genome**
 
