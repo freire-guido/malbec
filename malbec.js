@@ -103,12 +103,12 @@ var malbec = {
         return network;
     },
     crossOver: function (...networks) {
-        networks[0].layers.forEach(NLayer => {
-            for (let j = 0; j < NLayer.genome.length; j++) {
-                console.log(NLayer.genome[j]);
+        let childnet = [];
+        for (let j = 0; j < networks[0].layers.length; j++) {
+            for (let i = 0; i < networks[0].layers[j].genome.length; i++) {
                 let dice = new Array(networks.length + 1);
                 dice[0] = 0;
-                dice[dice.length - 1] = NLayer.genome[j].length - 1;
+                dice[dice.length - 1] = networks[0].layers[j].genome[i].length - 1;
                 for (let d = 1; d < dice.length - 1; d++) {
                     for (let dtemp = d; dtemp < dice.length; dtemp++) {
                         if (dice[dtemp] != undefined) {
@@ -118,9 +118,14 @@ var malbec = {
                     }
                     let min = dice[d - 1];
                     dice[d] = Math.floor(Math.random() * (max - min)) + min;
-                    console.log(dice)
+                }
+                let childlay = [];
+                console.log(dice)
+                for (let n = 0; n < networks.length; n++) {
+                    console.log(n, n+1)
+                    console.log(networks[n].layers[j].genome[i].slice(dice[n], dice[n+1]));
                 }
             }
-        });
+        }
     }
 }
