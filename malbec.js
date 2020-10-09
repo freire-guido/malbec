@@ -103,8 +103,8 @@ var malbec = {
         return network;
     },
     crossOver: function (...networks) {
-        let childnet = [];
         for (let j = 0; j < networks[0].layers.length; j++) {
+            let genome = [];
             for (let i = 0; i < networks[0].layers[j].genome.length; i++) {
                 let dice = new Array(networks.length + 1);
                 dice[0] = 0;
@@ -119,13 +119,13 @@ var malbec = {
                     let min = dice[d - 1];
                     dice[d] = Math.floor(Math.random() * (max - min)) + min;
                 }
-                let childlay = [];
-                console.log(dice)
+                let gen = [];
                 for (let n = 0; n < networks.length; n++) {
-                    console.log(n, n+1)
-                    console.log(networks[n].layers[j].genome[i].slice(dice[n], dice[n+1]));
+                    networks[n].layers[j].genome[i].slice(dice[n], dice[n + 1]).forEach(chrom => {gen.push(chrom)});
                 }
+                console.log(gen);
             }
+            genome.push(gen);
         }
     }
 }
