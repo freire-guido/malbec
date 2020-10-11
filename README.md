@@ -78,9 +78,18 @@ network1[0].genome = network2[0].genome(); // Copies network2's first layer into
 
 Multiple NNetworks can be "Crossed": their weights and biases spliced at random intervals, returning a new child network. NNetworks should have at minimum, the same layer structure (same amount of neurons/outputs per layer). The child network will follow the first NNetwork's structure.
 
-**crossover(NNetwork, NNetwork, ...)**
+**crossover(...networks)**
 
 ```
 var childNet = malbec.crossOver(network2, network1);
 ```
 
+### Mutate
+
+Changes weights or biases of one or many NNetwork/s to random values according to the given chance. The chance should be a value between 0 and 1, where 1 represents a 100% probability of the gen mutating and 0 being 0%.
+
+**mutate(chance, ...networks)**
+
+```
+malbec.mutate(0.5, network1, network2)
+```
