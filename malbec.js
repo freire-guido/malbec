@@ -109,7 +109,7 @@ var malbec = {
             for (let i = 0; i < networks[0].layers[j].genome.length; i++) {
                 let dice = new Array(networks.length + 1);
                 dice[0] = 0;
-                dice[dice.length - 1] = networks[0].layers[j].genome[i].length - 1;
+                dice[dice.length - 1] = networks[0].layers[j].genome[i].length;
                 for (let d = 1; d < dice.length - 1; d++) {
                     for (let dtemp = d; dtemp < dice.length; dtemp++) {
                         if (dice[dtemp] != undefined) {
@@ -122,8 +122,11 @@ var malbec = {
                 }
                 var gen = [];
                 for (let n = 0; n < networks.length; n++) {
-                    networks[n].layers[j].genome[i].slice(dice[n], dice[n + 1]).forEach(chrom => {gen.push(chrom)});
+                    console.log("dice", dice[n], dice[n+1])
+                    networks[n].layers[j].genome[i].slice(dice[n], dice[n + 1]).forEach(chrom => {gen.push(chrom); console.log("childchrom", chrom)});
                 }
+                console.log("gen", networks[0].layers[j].genome[i])
+                console.log("childgen", gen)
                 genome.push(gen);
             }
             childnet.layers[j].genome = genome;
