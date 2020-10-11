@@ -73,3 +73,14 @@ These genome objects can be read by other NLayers, setting their parameters to t
 ```
 network1[0].genome = network2[0].genome(); // Copies network2's first layer into network1's first layer
 ```
+
+### Crossover
+
+Multiple NNetworks can be "Crossed": their weights and biases spliced at random intervals, returning a new child network. NNetworks should have at minimum, the same layer structure (same amount of neurons/outputs per layer). The child network will follow the first NNetwork's structure.
+
+**crossover(NNetwork, NNetwork, ...)**
+
+```
+var childNet = malbec.crossOver(network2, network1);
+```
+

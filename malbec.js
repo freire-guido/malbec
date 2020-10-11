@@ -122,11 +122,8 @@ var malbec = {
                 }
                 var gen = [];
                 for (let n = 0; n < networks.length; n++) {
-                    console.log("dice", dice[n], dice[n+1])
-                    networks[n].layers[j].genome[i].slice(dice[n], dice[n + 1]).forEach(chrom => {gen.push(chrom); console.log("childchrom", chrom)});
+                    networks[n].layers[j].genome[i].slice(dice[n], dice[n + 1]).forEach(chrom => {gen.push(chrom)});
                 }
-                console.log("gen", networks[0].layers[j].genome[i])
-                console.log("childgen", gen)
                 genome.push(gen);
             }
             childnet.layers[j].genome = genome;
