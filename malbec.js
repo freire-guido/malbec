@@ -122,12 +122,29 @@ var malbec = {
                 }
                 var gen = [];
                 for (let n = 0; n < networks.length; n++) {
-                    networks[n].layers[j].genome[i].slice(dice[n], dice[n + 1]).forEach(chrom => {gen.push(chrom)});
+                    networks[n].layers[j].genome[i].slice(dice[n], dice[n + 1]).forEach(chrom => { gen.push(chrom) });
                 }
                 genome.push(gen);
             }
             childnet.layers[j].genome = genome;
         }
         return childnet;
+    },
+    mutate: function (chance, ...networks) {
+        if (chance > 1){
+            throw "Chance cannot be greater than 1"
+        }
+        for (let n = 0; n < networks.length; n++) {
+            for (let l = 1; l < networks[n].layers.length; l++) {
+                for (let i = 0; i < networks[n].layers[l].weights.length; i++) {
+                    for (let j = 0; j < networks[n].layers[l].weights[i].length; j++) {
+                        let dice = Math.random();
+                        if (dice < chance) {
+                            networks[n].layers[l].weights[i][j] = Math.random();
+                        }
+                    }
+                }
+            }
+        }
     }
 }
